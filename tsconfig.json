@@ -1,0 +1,45 @@
+{
+  // 访问 https://aka.ms/tsconfig 以了解更多关于此文件的信息
+  "compilerOptions": {
+    // 文件结构（可选配置）
+    "rootDir": "./src",        // 指定源代码的根目录，TypeScript 将从此目录开始查找源文件
+    "outDir": "./dist",        // 编译输出的 JavaScript 文件将存放在此目录中
+
+    // 环境设置
+    // 参见：https://aka.ms/tsconfig/module
+    "module": "nodenext",        // 使用 Node.js 的现代模块系统（支持 .ts 文件导入、package.json 中的 exports/imports）
+    "target": "esnext",          // 编译目标为最新的 ECMAScript 标准（ESNext），保留最新语法特性
+    "types": [],                 // 显式指定包含的类型定义包（空数组表示不自动包含任何全局类型，如 @types/node 需手动添加）
+
+    // Node.js 项目建议配置：
+    // "lib": ["esnext"],         // 指定编译时包含的库文件，这里使用最新 ES 标准（无 DOM 类型）
+    // "types": ["node"],         // 声明项目依赖 Node.js 的类型定义，需配合安装 @types/node
+    // 并运行：npm install -D @types/node
+
+    // 其他输出选项
+    "sourceMap": true,           // 生成 .map 文件，便于调试 TypeScript 源码（浏览器或调试器可映射到原文件）
+    "declaration": true,         // 为每个 .ts 文件生成对应的 .d.ts 类型声明文件（用于发布 npm 包）
+    "declarationMap": true,      // 生成 .d.ts 文件的 source map，便于追踪类型声明的来源
+
+    // 更严格的类型检查选项
+    "noUncheckedIndexedAccess": true,      // 启用后，通过索引访问对象时，类型将自动变为 undefined | T（防止 undefined 错误）
+    "exactOptionalPropertyTypes": true,    // 可选属性的类型不会自动包含 undefined，除非显式声明（更精确的类型控制）
+
+    // 风格相关选项（建议启用以提升代码质量）
+    // "noImplicitReturns": true,           // 要求函数所有分支都有返回值，防止隐式返回 undefined
+    "noImplicitOverride": true,          // 方法重写必须使用 override 关键字，防止意外覆盖
+    "noUnusedLocals": true,              // 禁止声明但未使用的局部变量
+    // "noUnusedParameters": true,          // 禁止未使用的函数参数
+    // "noFallthroughCasesInSwitch": true,  // switch 语句中每个 case 必须有 break 或 throw，防止意外穿透
+    // "noPropertyAccessFromIndexSignature": true, // 禁止用 . 访问索引签名类型中的属性（强制使用 []）
+
+    // 推荐的选项（大多数项目应启用）
+    "strict": true,                        // 启用所有严格类型检查选项（是类型安全的基石）
+    "jsx": "react-jsx",                    // 使用新的 JSX 转换（React 17+），无需手动导入 React
+    "verbatimModuleSyntax": false,          // 保留模块语法原样（支持导入类型和值同名的模块，TypeScript 5.0+ 特性）
+    "isolatedModules": true,               // 要求每个文件可独立编译（兼容 Babel、esbuild 等工具，需配合 emitDecoratorMetadata 等限制）
+    "noUncheckedSideEffectImports": true,  // 禁止导入有副作用但未在 package.json 中声明的模块（提升模块安全性）
+    "moduleDetection": "force",            // 强制将所有 .ts 文件视为模块（即使没有 import/export）
+    "skipLibCheck": true                   // 跳过对 .d.ts 类型声明文件的类型检查，加快编译速度（推荐开启）
+  }
+}

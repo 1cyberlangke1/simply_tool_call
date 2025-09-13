@@ -1,0 +1,20 @@
+{
+  "name": "simply_tool_call",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "author": "cyberlangke",
+  "dependencies": {
+    "express": "^5.1.0",
+    "openai": "^5.19.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.3",
+    "tsx": "^4.20.5"
+  }
+}
