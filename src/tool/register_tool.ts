@@ -21,7 +21,7 @@ export class ToolRegister {
    * @type {string}
    * @memberof ToolRegister
    */
-  static prefixChar: string = "#";
+  static prefixChar: string = "※";
 
   /**
    * 注册工具
