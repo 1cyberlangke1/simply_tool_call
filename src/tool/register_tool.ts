@@ -83,6 +83,6 @@ export class ToolRegister {
   }
 }
 
-const toolCallPrompt: string = `# 工具文档\n你可以使用以下工具来执行操作或者获取额外信息\n使用语法: ${ToolRegister.prefixChar}toolName 或者如果命令需要参数 ${ToolRegister.prefixChar}toolName("参数1", 1.2,...)\n不要使用代码块,字符串使用双引号.每次响应只能调用一个工具,后续的工具和注释将被忽略,但是默认允许多轮响应\n不允许自己编造工具调用结果\n不要解释或提及使用 \`<tool>\` 标签或 \`\`\`tool 代码块等格式.\n`;
+const toolCallPrompt: string = `# 工具文档\n你可以使用以下工具来执行操作或者获取额外信息\n使用语法: ${ToolRegister.prefixChar}toolName 或者如果命令需要参数 ${ToolRegister.prefixChar}toolName("参数1", 1.2,...)\n不要使用代码块,字符串使用双引号.每次回复只能调用一个工具,后续的工具和注释将被忽略,但是默认允许多轮回复\n不允许自己编造工具调用结果\n不要解释或提及使用 \`<tool>\` 标签或 \`\`\`tool 代码块等格式.\n`;
 
 //※|¶|

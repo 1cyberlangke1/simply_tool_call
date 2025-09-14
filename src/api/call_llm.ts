@@ -25,13 +25,22 @@ export class LLM {
   private _keyIndex: number = 0;
   private _apiUsage: number = 0;
   private _failedApiCalls: number = 0;
+  private _logConfig: {
+    printRequestContent: boolean;
+    printResponse: boolean;
+    printError: boolean;
+  };
 
   /**
    * 构造 LLM 实例
    * @param {LLMconfig} config - LLM 配置对象，包含 API 地址、模型名称、调用参数等
    * @param {number} [retries=3] - 请求失败时的最大重试次数（不含首次请求），必须为非负整数
    */
-  constructor(config: LLMconfig, retries: number = 3) {
+  constructor(
+    config: LLMconfig,
+    retries: number = 3,
+    logConfig = { printRequestContent: true, printResponse: true, printError: true }
+  ) {
     if (retries < 0) throw new Error("Retries must be a non-negative integer");
     this._retries = retries;
     this._OpenAIclient = new OpenAI({ baseURL: config.baseURL, apiKey: "" });
@@ -45,6 +54,7 @@ export class LLM {
       max_tokens: config.max_tokens,
       stream: false,
     };
+    this._logConfig = logConfig;
   }
 
   /**
@@ -55,6 +65,8 @@ export class LLM {
   async rawRequest(request: OpenAI.ChatCompletionCreateParams): Promise<OpenAI.ChatCompletion> {
     if (!request.messages[0])
       throw new Error("Messages array is empty. At least one message is required.");
+    if (this._logConfig.printRequestContent)
+      console.log(`Request: ${JSON.stringify(request.messages).slice(0, 1000)}`);
     request.stream = false;
     for (let i = 1; i <= this._retries; i++) {
       this._OpenAIclient.apiKey = this._keys[this._keyIndex] as string;
@@ -62,12 +74,16 @@ export class LLM {
         // console.log(`Now using key${this._keyIndex}`);
         const response = await this._OpenAIclient.chat.completions.create(request);
         this._keyIndex = (this._keyIndex + 1) % this._keys.length;
+        if (this._logConfig.printResponse)
+          console.log(`Response: ${JSON.stringify(response).slice(0, 1000)}`);
         return response as OpenAI.ChatCompletion;
       } catch (error) {
         ++this._failedApiCalls;
-        if (i === this._retries) throw error;
         this._keyIndex = (this._keyIndex + 1) % this._keys.length;
         this._OpenAIclient.apiKey = this._keys[this._keyIndex] as string;
+        if (this._logConfig.printError)
+          console.error(`Error on attempt ${i}: ${errorStringify(error)}`);
+        if (i === this._retries) throw error;
       } finally {
         ++this._apiUsage;
       }
